@@ -1,0 +1,33 @@
+http:
+  base_url: https://stage-api.780.ir
+  api_key:
+  device_meta_data: LG-a65sd14
+  user_phone_number:
+
+swagger:
+  url: https://stage-api.780.ir
+  modules:
+    - path: shopping_order
+      url: shoppingorder
+
+    - path: user_manager
+      url: usermanager
+
+    - path: domestic_flight_aggregator
+      url: domestic-flight-aggregator
+
+
+databases:
+  - name: mysql
+    host:
+    port:
+    username:
+    password:
+    database:
+
+modules:
+  domestic:
+    passenger_id: 265c7b24-7bde-4a62-8305-0deae13e054d
+    mock_airline: "زاگرسsh"
+    discount_code: "dmt999"
+    flightTotalPrice: 7200000
