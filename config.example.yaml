@@ -1,11 +1,13 @@
 http:
-  base_url: https://stage-api.780.ir
+  # Use a non-sensitive environment endpoint (replace locally)
+  base_url: https://api.example.com
+  # Keep empty in source control; inject via local config/CI secrets
   api_key:
-  device_meta_data: LG-a65sd14
+  device_meta_data: generic-device
   user_phone_number:
 
 swagger:
-  url: https://stage-api.780.ir
+  url: https://api.example.com
   modules:
     - path: shopping_order
       url: shoppingorder
@@ -27,7 +29,7 @@ databases:
 
 modules:
   domestic:
-    passenger_id: 265c7b24-7bde-4a62-8305-0deae13e054d
-    mock_airline: "زاگرسsh"
-    discount_code: "dmt999"
-    flightTotalPrice: 7200000
+    passenger_id: 00000000-0000-0000-0000-000000000000
+    mock_airline: "SAMPLE_AIRLINE"
+    discount_code:
+    flightTotalPrice: 0

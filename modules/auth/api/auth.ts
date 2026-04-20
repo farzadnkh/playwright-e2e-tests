@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import path from 'node:path';
+import process from 'node:process';
 import type { RegisterRequest, RegisterResponse, TokenRequest, TokenResponse } from '@/modules/auth/types/types';
 import { config } from '@/utils/config/config';
 import { http } from '@/utils/http/http';
@@ -27,15 +28,14 @@ export class AuthApi {
   }
 
   async token(params?: TokenRequest): Promise<TokenResponse> {
-    fs.mkdirSync(this.tokenDir, { recursive: true });
-
     const req = await http();
     const res: APIResponse = await req.post(`${URL_PREFIX}/token`, {
       headers: {
         mobile_no: params?.phone ?? config.http.user_phone_number ?? ''
       },
       data: {
-        code: params?.code ?? '1234'
+        // Keep OTP/code configurable from runtime environment.
+        code: params?.code ?? process.env.AUTH_CODE ?? '0000'
       }
     });
 
@@ -45,7 +45,11 @@ export class AuthApi {
 
     const tokenResponse = (await res.json()) as TokenResponse;
 
-    fs.writeFileSync(this.tokenFile, JSON.stringify(tokenResponse, null, 2));
+    // Cache token only when explicitly enabled to avoid accidental local artifacts.
+    if (process.env.SAVE_TOKEN_CACHE === 'true') {
+      fs.mkdirSync(this.tokenDir, { recursive: true });
+      fs.writeFileSync(this.tokenFile, JSON.stringify(tokenResponse, null, 2));
+    }
 
     return tokenResponse;
   }
@@ -53,8 +57,16 @@ export class AuthApi {
   async refreshToken({ phone, code }: TokenRequest) {}
 
   loadToken(): TokenResponse {
+    if (process.env.TOKEN) {
+      return {
+        access_token: process.env.TOKEN,
+        refresh_token: '',
+        sign_token: ''
+      };
+    }
+
     if (!fs.existsSync(this.tokenFile)) {
-      throw new Error('Token file not found. Run the authentication setup first.');
+      throw new Error('Token source not found. Set TOKEN env, enable SAVE_TOKEN_CACHE, or run auth setup.');
     }
 
     return JSON.parse(fs.readFileSync(this.tokenFile, 'utf8'));

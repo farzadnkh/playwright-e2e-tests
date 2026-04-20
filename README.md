@@ -54,6 +54,13 @@ npx playwright install
 cp config.example.yaml config.yaml
 ```
 
+## Secure Configuration
+
+- `config.example.yaml` is intentionally sanitized for public sharing.
+- Keep `config.yaml` local (already gitignored) and inject real values via secure local/CI secrets.
+- `TOKEN` can be supplied as an environment variable.
+- Token cache is disabled by default; enable only if explicitly needed with `SAVE_TOKEN_CACHE=true`.
+
 ## Run
 
 ```bash
