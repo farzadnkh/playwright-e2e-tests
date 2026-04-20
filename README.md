@@ -1,36 +1,46 @@
-## 780 E2E
+﻿# Playwright E2E Framework
 
-### Installation
+Reusable TypeScript Playwright framework for API and UI validation with modular architecture. This repository demonstrates scalable QA automation design for regression and release confidence.
 
-First clone this project from git
+## QA Focus
 
-```bash
-    git clone https://p-source.780.ir/mobin.y/e2e.git
+- API + UI test coverage in one framework
+- Modular authentication and domain-level test modules
+- Maintainable test code with reusable helpers
+- CI-ready execution and reporting
+
+## Tech Stack
+
+- Playwright
+- TypeScript
+- Node.js
+
+## Suggested Architecture
+
+```text
+playwright-e2e-tests/
+├── modules/                # Feature/domain modules (auth, etc.)
+├── tests/                  # Scenario-oriented test specs
+├── utils/                  # Shared helpers and fixtures
+├── playwright.config.ts
+└── package.json
 ```
 
-then install dependencies
-
-#### note: you have to install nodejs and npm first!
+## Setup
 
 ```bash
-    npm i
+npm install
+npx playwright install
 ```
 
-then copy config.example.yaml as config.yaml
-```bash
-    cp config.example.yaml config.yaml
-```
-
-
-then generate swagger
+## Run
 
 ```bash
-    npm run swagger
+npm test
+npx playwright test
+npx playwright test --headed
 ```
 
+## Why This Repo Matters
 
-### Usage
-
-```bash
-    npm run test
-```
+This project highlights framework-level QA engineering skills: abstraction, maintainability, and test reliability under CI/CD workflows.
