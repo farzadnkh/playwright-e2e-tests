@@ -1,27 +1,47 @@
-﻿# Playwright E2E Framework
+﻿# Playwright E2E Framework (TypeScript)
 
-Reusable TypeScript Playwright framework for API and UI validation with modular architecture. This repository demonstrates scalable QA automation design for regression and release confidence.
+![QA Focus](https://img.shields.io/badge/QA-Framework%20Engineering-1f6feb)
+![Playwright](https://img.shields.io/badge/Framework-Playwright-2EAD33)
+![Language](https://img.shields.io/badge/Language-TypeScript-3178C6)
+![Security](https://img.shields.io/badge/Secrets-Env--Driven-success)
 
-## QA Focus
+Reusable TypeScript Playwright framework for scalable API/UI testing in CI/CD pipelines.
 
-- API + UI test coverage in one framework
-- Modular authentication and domain-level test modules
-- Maintainable test code with reusable helpers
-- CI-ready execution and reporting
+## Why This Looks Senior
 
-## Tech Stack
+- Modular domain architecture (`modules/*`) for long-term maintainability
+- Shared auth/bootstrap setup with reusable HTTP/test utilities
+- Environment-driven configuration and token handling
+- Framework-first approach for team scale, not single-script testing
 
-- Playwright
-- TypeScript
-- Node.js
+## Architecture
 
-## Suggested Architecture
+```mermaid
+flowchart LR
+  CFG[Config Loader] --> AUTH[Auth Setup]
+  AUTH --> ENV[process.env TOKEN]
+  ENV --> HTTP[HTTP Client]
+  HTTP --> MOD[Domain Modules]
+  MOD --> TEST[Test Specs]
+  TEST --> REP[Playwright Reports]
+```
+
+## Test Strategy
+
+- **Contract/API checks:** Fast backend signal before UI layers.
+- **Workflow/UI checks:** User-centric critical paths.
+- **Layered reliability:** Shared setup, reusable fixtures, deterministic config.
+- **CI-ready quality gate:** Parallel execution + artifact reporting.
+- **Security hygiene:** API keys/tokens loaded from config/env, never hardcoded.
+
+## Project Structure
 
 ```text
 playwright-e2e-tests/
-├── modules/                # Feature/domain modules (auth, etc.)
-├── tests/                  # Scenario-oriented test specs
-├── utils/                  # Shared helpers and fixtures
+├── modules/
+├── utils/
+├── tests/
+├── config.example.yaml
 ├── playwright.config.ts
 └── package.json
 ```
@@ -31,16 +51,18 @@ playwright-e2e-tests/
 ```bash
 npm install
 npx playwright install
+cp config.example.yaml config.yaml
 ```
 
 ## Run
 
 ```bash
-npm test
 npx playwright test
 npx playwright test --headed
 ```
 
-## Why This Repo Matters
+## Security Notes
 
-This project highlights framework-level QA engineering skills: abstraction, maintainability, and test reliability under CI/CD workflows.
+- Keep `config.yaml` local/private.
+- Use CI secret variables for API keys and credentials.
+- Never commit runtime tokens.
